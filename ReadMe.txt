@@ -1,5 +1,16 @@
-Priprema:
+Uputa za GitHub:
+Instaliraj git bash
+Kad hoces da preuzmes kod:
+	U folderu u kojem hoces kod otvoris git bash
+	git clone <url od projekta>
+Kad hoces da preuzmes novu verziju (uradi kad god sta hoces da mijenjas):
+	git pull origin master
+Kad hoces da pohranis izmjenu:
+	Za svaku izmijenjenu fajlu: git add <put do fajla> (moze i samo git add --all)
+	git commit -m "naziv komita"
+	git push origin master
 
+Priprema:
 pip install fastapi uvicorn
 instaliraj Node.js ()
 u frontend folderu:

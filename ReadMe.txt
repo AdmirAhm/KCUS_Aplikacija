@@ -22,6 +22,8 @@ Terminal 1:
 u backend folderu
 	uvicorn main:app --reload
 
+Kad zelim provjeriti stranicu u folder sa aplikacijom udjem u cmd cd frontend i u drugi cmd cd backend i unosim naredbe npm run dev za frontend a za backend uvicorn main:app --reload
+
 Terminal 2:
 u frontend folderu
 	npm run dev

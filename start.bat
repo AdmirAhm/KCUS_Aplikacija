@@ -1,0 +1,6 @@
+@echo off
+echo Starting backend...
+start cmd /k "cd backend && uvicorn main:app --reload"
+
+echo Starting frontend...
+start cmd /k "cd frontend && npm run dev"

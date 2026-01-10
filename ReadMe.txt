@@ -29,3 +29,5 @@ u frontend folderu
 	npm run dev
 
 Pogledati adresu u drugom terminalu (localhost:PORT), na toj adresi je lokalno pokrenut frontend
+
+Pokretati kod kroz start.bat fajlu

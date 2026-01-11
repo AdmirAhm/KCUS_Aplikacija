@@ -1,29 +1,58 @@
 import { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-
+import { useNavigate } from "react-router-dom";
 
 export default function Registracija() {
   const [ime, setIme] = useState("");
+  const [prezime, setPrezime] = useState("");
+  const [email, setEmail] = useState("");
+
   const [sifra, setSifra] = useState("");
   const [uloga, setUloga] = useState("student");
   const [showPassword, setShowPassword] = useState(false);
-
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     if (sifra.length !== 4) {
       alert("Greška: šifra mora imati tačno 4 karaktera!");
       return;
     }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    e.preventDefault();
+    if (!emailRegex.test(email)) {
+      alert("Unesite ispravan email!");
+      return;
+    }
+  // Slanje podataka na backend
+fetch("http://localhost:8000/register", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ 
+    ime, 
+    prezime, 
+    password: sifra, 
+    email, 
+    uloga 
+  })
+})
+  .then(res => {
+    if (!res.ok) return res.json().then(err => { throw new Error(err.detail) });
+    return res.json();
+  })
+  .then(data => {
+    alert(data.message);
+    // Opcionalno očisti formu nakon uspješne registracije
+    setIme("");
+    setPrezime("");
+    setEmail("");
+    setSifra("");
+    setUloga("student");
+  })
+  .catch(err => alert(err.message));
 
-    // Za sada samo provjera u konzoli
-    console.log("Registracija:");
-    console.log("Ime:", ime);
-    console.log("Šifra:", sifra);
-    console.log("Uloga:", uloga);
 
-    alert("Registracija uspješna");
+
   };
 
   return (
@@ -37,6 +66,24 @@ export default function Registracija() {
         color: "white"
       }}
     >
+    <div
+      onClick={() => navigate("/")}
+      style={{
+        position: "fixed",
+        top: "20px",
+        left: "20px",
+        background: "#e5e5e5",
+        color: "black",
+        padding: "8px 14px",
+        cursor: "pointer",
+        fontSize: "0.95rem",
+        border: "1px solid #aaa",
+        zIndex: 1000
+      }}
+    >
+      Nazad
+    </div>
+
       <form
         onSubmit={handleSubmit}
         style={{
@@ -59,6 +106,24 @@ export default function Registracija() {
           required
           style={inputStyle}
         />
+        <input
+  	  type="text"
+	  placeholder="Prezime"
+	  value={prezime}
+	  onChange={(e) => setPrezime(e.target.value)}
+	  required
+	  style={inputStyle}
+	/>
+
+	<input
+	  type="email"
+	  placeholder="Email"
+	  value={email}
+	  onChange={(e) => setEmail(e.target.value)}
+	  required
+	  style={inputStyle}
+	/>
+
 
         <div style={{ position: "relative", width: "100%" }}>
   	  <input

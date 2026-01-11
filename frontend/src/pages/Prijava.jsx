@@ -1,25 +1,61 @@
 import { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 export default function Prijava() {
   const [ime, setIme] = useState("");
+  const [prezime, setPrezime] = useState("");
+  const [email, setEmail] = useState("");
   const [sifra, setSifra] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Šifra tačno 4 karaktera
     if (sifra.length !== 4) {
       alert("Greška: šifra mora imati tačno 4 karaktera!");
       return;
     }
 
-    e.preventDefault();
+    // Provjera email formata
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Unesite ispravan email!");
+      return;
+    }
 
-    // Za sada samo provjera u konzoli
-    console.log("Prijava:");
-    console.log("Ime:", ime);
-    console.log("Šifra:", sifra);
+    // Provjera da su sva polja unesena
+    if (!ime || !prezime || !email) {
+      alert("Molimo popunite sva polja!");
+      return;
+    }
 
-    alert("Prijava uspješna");
+    try {
+      const response = await fetch("http://localhost:8000/prijava", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ime, prezime, email, sifra })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.detail || "Nepostojeći korisnik!");
+      } else {
+        alert(data.message);
+        if (data.message === "Prijava uspješna") {
+	  localStorage.setItem("isLoggedIn", "true");
+	  localStorage.setItem("userRole", data.userRole);
+// uloga = "student" ili "pacijent"
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      alert("Greška prilikom spajanja na server: " + error.message);
+    }
   };
 
   return (
@@ -33,6 +69,25 @@ export default function Prijava() {
         color: "white"
       }}
     >
+      {/* Dugme Nazad */}
+      <div
+        onClick={() => navigate("/")}
+        style={{
+          position: "fixed",
+          top: "20px",
+          left: "20px",
+          background: "#e5e5e5",
+          color: "black",
+          padding: "8px 14px",
+          cursor: "pointer",
+          fontSize: "0.95rem",
+          border: "1px solid #aaa",
+          zIndex: 1000
+        }}
+      >
+        Nazad
+      </div>
+
       <form
         onSubmit={handleSubmit}
         style={{
@@ -47,12 +102,29 @@ export default function Prijava() {
       >
         <h2 style={{ textAlign: "center" }}>Prijava</h2>
 
-        {/* Ime input */}
         <input
           type="text"
           placeholder="Ime"
           value={ime}
           onChange={(e) => setIme(e.target.value)}
+          required
+          style={inputStyle}
+        />
+
+        <input
+          type="text"
+          placeholder="Prezime"
+          value={prezime}
+          onChange={(e) => setPrezime(e.target.value)}
+          required
+          style={inputStyle}
+        />
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
           style={inputStyle}
         />
@@ -76,13 +148,6 @@ export default function Prijava() {
             }}
           />
 
-          {/* Hint kada ništa nije uneseno */}
-          {sifra.length === 0 && (
-            <span style={{ fontSize: "0.85rem", color: "#ccc" }}>
-              Unesite 4 karaktera
-            </span>
-          )}
-
           {/* Show / Hide dugme */}
           <button
             type="button"
@@ -99,18 +164,16 @@ export default function Prijava() {
               color: "#333"
             }}
           >
-            {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+            {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
           </button>
         </div>
 
-        {/* Validacija */}
         {sifra.length > 0 && sifra.length !== 4 && (
           <span style={{ color: "#ffb3b3", fontSize: "0.85rem" }}>
             Šifra mora imati tačno 4 karaktera!
           </span>
         )}
 
-        {/* Submit dugme */}
         <button type="submit" style={buttonStyle}>
           Prijavi se
         </button>
@@ -119,7 +182,6 @@ export default function Prijava() {
   );
 }
 
-// Zajednički stilovi
 const inputStyle = {
   padding: "10px",
   borderRadius: "10px",

@@ -3,13 +3,14 @@ import Home from "./pages/Home";
 import Department from "./pages/Department";
 import Prijava from "./pages/Prijava";
 import Registracija from "./pages/Registracija";
+import Odjeli from "./pages/Odjeli";
 
 function App() {
   return (
     <Routes>
       {/* Home */}
       <Route path="/" element={<Home />} />
-
+      <Route path="/odjeli" element={<Odjeli />}/>
       {/* Prijava & Registracija */}
       <Route path="/prijava" element={<Prijava />} />
       <Route path="/registracija" element={<Registracija />} />

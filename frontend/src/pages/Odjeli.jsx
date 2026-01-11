@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
-export default function Departments() {
+export default function Odjeli() {
   const [departments, setDepartments] = useState([]);
   const [selected, setSelected] = useState(null);
   const [info, setInfo] = useState(null);
 
   useEffect(() => {
     // Fetch departments for combo box
-    fetch("http://localhost:5000/departments")
+    fetch("http://localhost:8000/odjeli")
       .then(res => res.json())
       .then(data => setDepartments(data))
       .catch(err => console.log(err));
@@ -16,7 +16,7 @@ export default function Departments() {
   useEffect(() => {
     if (selected) {
       // Fetch info for selected department
-      fetch(`http://localhost:5000/department/${selected}`)
+      fetch(`http://localhost:8000/odjeli/${selected}`)
         .then(res => res.json())
         .then(data => setInfo(data))
         .catch(err => console.log(err));
@@ -31,17 +31,17 @@ export default function Departments() {
       <select onChange={e => setSelected(e.target.value)} value={selected || ""}>
         <option value="" disabled>Odaberite...</option>
         {departments.map(d => (
-          <option key={d.id} value={d.id}>{d.name}</option>
+          <option key={d.ID} value={d.ID}>{d.naziv}</option>
         ))}
       </select>
 
       {info && (
         <div style={{ marginTop: "20px" }}>
-          <h3>{info.name}</h3>
-          <img src={info.map_image} alt="Map" style={{ width: "80%", maxWidth: "600px" }} />
-          <p>{info.description}</p>
-          <p><strong>Zaposlenici:</strong> {info.employees}</p>
-          <p><strong>Uputstvo:</strong> {info.instructions}</p>
+          <h3>{info.naziv}</h3>
+          <img src={info.slika} alt="Map" style={{ width: "80%", maxWidth: "600px" }} />
+          <p>{info.opis}</p>
+          <p><strong>Zaposlenici:</strong> {info.opis}</p>
+          <p><strong>Uputstvo:</strong> {info.uputstva}</p>
         </div>
       )}
     </div>

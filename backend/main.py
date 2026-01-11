@@ -1,9 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import sqlite3
+from typing import List, Dict
 
 app = FastAPI()
 
-# Allow React to talk to FastAPI
+# Allow React frontend to call FastAPI
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -11,30 +13,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-departments = [
-    {
-        "id": 1,
-        "name": "Dermatology",
-        "floor": 1,
-        "working_hours": "07:00 - 16:00",
-        "expected_wait": "10 minutes"
-    },
-    {
-        "id": 2,
-        "name": "Radiology",
-        "floor": 2,
-        "working_hours": "08:00 - 17:00",
-        "expected_wait": "25 minutes"
-    }
-]
+DB = "baza/KCUS_baza.db"
 
-@app.get("/departments")
-def get_departments():
-    return departments
+def get_db_connection():
+    conn = sqlite3.connect(DB)
+    conn.row_factory = sqlite3.Row  # Allows access by column name
+    return conn
 
-@app.get("/departments/{dept_id}")
+@app.get("/odjeli", response_model=List[Dict])
+def list_departments():
+    conn = get_db_connection()
+    depts = conn.execute("SELECT ID, naziv FROM Odjel").fetchall()
+    conn.close()
+    return [dict(d) for d in depts]
+
+@app.get("/odjeli/{dept_id}", response_model=Dict)
 def get_department(dept_id: int):
-    for d in departments:
-        if d["id"] == dept_id:
-            return d
-    return {"error": "Department not found"}
+    conn = get_db_connection()
+    dept = conn.execute("SELECT * FROM Odjel WHERE ID=?", (dept_id,)).fetchone()
+    conn.close()
+    if dept:
+        return dict(dept)
+    else:
+        raise HTTPException(status_code=404, detail="Department not found")
+
+# Optional: Run with `uvicorn main:app --reload` instead of `app.run()`

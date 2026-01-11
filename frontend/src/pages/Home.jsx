@@ -15,7 +15,7 @@ export default function Home() {
   }, []);
 
   const buttons = [
-    { icon: <BiMap size={80} />, text: "Informacije o odjelima" },
+    { icon: <BiMap size={80} />, text: "Informacije o odjelima", route: "/odjeli" },
     { icon: <BiPaste size={80} />, text: "Pregled nalaza" },
     { icon: <BiBook size={80} />, text: "Studentska stranica" },
     { icon: <BiCog size={80} />, text: "Opcije" }
@@ -133,6 +133,7 @@ export default function Home() {
         {buttons.map((b, i) => (
           <button
             key={i}
+            onClick={() => navigate(b.route)}
             style={{
               display: "flex",
               alignItems: "center",

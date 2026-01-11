@@ -40,7 +40,7 @@ export default function Odjeli() {
           <h3>{info.naziv}</h3>
           <img src={info.slika} alt="Map" style={{ width: "80%", maxWidth: "600px" }} />
           <p>{info.opis}</p>
-          <p><strong>Zaposlenici:</strong> {info.opis}</p>
+          <p><strong>Zaposlenici:</strong></p>
           <p><strong>Uputstvo:</strong> {info.uputstva}</p>
         </div>
       )}

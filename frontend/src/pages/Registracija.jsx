@@ -63,22 +63,24 @@ fetch("http://localhost:8000/register", {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        color: "white"
+        color: "white",
+        fontFamily: "Arial, sans-serif"
       }}
     >
     <div
       onClick={() => navigate("/")}
       style={{
-        position: "fixed",
-        top: "20px",
-        left: "20px",
-        background: "#e5e5e5",
-        color: "black",
-        padding: "8px 14px",
-        cursor: "pointer",
-        fontSize: "0.95rem",
-        border: "1px solid #aaa",
-        zIndex: 1000
+          position: "fixed",
+          top: "20px",
+          left: "20px",
+          padding: "10px 26px",
+          borderRadius: "30px",
+          border: "2px solid white",
+          background: "transparent",
+          color: "white",
+          fontSize: "1rem",
+          cursor: "pointer",
+          zIndex: 1000
       }}
     >
       Nazad

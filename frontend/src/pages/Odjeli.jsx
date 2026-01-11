@@ -24,8 +24,16 @@ export default function Odjeli() {
   }, [selected]);
 
   return (
-    <div style={{ padding: "20px", color: "white", background: "#3a3485", minHeight: "100vh" }}>
-      <button onClick={() => window.history.back()} style={{ marginBottom: "20px" }}>Nazad</button>
+    <div style={{ padding: "20px", color: "white", background: "#3a3485", minHeight: "100vh", fontFamily: "Arial, sans-serif"}}>
+      <button onClick={() => window.history.back()} style={{
+  padding: "10px 26px",
+  borderRadius: "30px",
+  border: "2px solid white",
+  background: "transparent",
+  color: "white",
+  fontSize: "1rem",
+  cursor: "pointer"
+}}>Nazad</button>
 
       <h2>Odaberite odjel:</h2>
       <select onChange={e => setSelected(e.target.value)} value={selected || ""}>

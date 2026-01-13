@@ -16,6 +16,10 @@ from pydantic import BaseModel
 
 
 DB = "baza/KCUS_baza.db"
+_user_ID=-1
+def setUserID(userID):
+    global _user_ID
+    _user_ID=userID
 
 def get_db_connection():
     conn = sqlite3.connect(DB)
@@ -102,6 +106,7 @@ def login_user(data: dict = Body(...)):
         raise HTTPException(status_code=404, detail="Nepostojeći korisnik!")
 
     user_id = user["ID"]
+    setUserID(user_id)
 
     # provjeri ulogu
     student = conn.execute("SELECT korisnikID FROM Student WHERE korisnikID=?", (user_id,)).fetchone()
@@ -121,3 +126,22 @@ def login_user(data: dict = Body(...)):
         "userId": user_id
     }
 
+@app.get("/nalazi", response_model=List[Dict])
+def get_nalazi_for_user():
+    if _user_ID == -1:
+        raise HTTPException(status_code=401, detail="Korisnik nije prijavljen")
+
+    conn = get_db_connection()
+
+    nalazi = conn.execute(
+        """
+        SELECT ID, opis, datum, status
+        FROM nalaz
+        WHERE pacijentID = ?
+        ORDER BY ID DESC
+        """,
+        (_user_ID,)
+    ).fetchall()
+
+    conn.close()
+    return [dict(n) for n in nalazi]

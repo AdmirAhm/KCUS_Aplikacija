@@ -127,19 +127,32 @@ export default function Nalazi() {
               <div
                 key={n.ID}
                 style={{
-                  backgroundColor: getBgColor(n.status),
+                  backgroundColor: "3a3485",
                   border: "4px solid white",
-                  borderRadius: "100px",
-                  padding: "15px",
-                  paddingLeft: "40px",
-                  marginBottom: "15px"
+                  borderRadius: "50px",
+                  marginBottom: "15px",
+                  
+                  color: getBgColor(n.status),
+                  overflow: "hidden"
                 }}
               >
-                <p><strong>Datum:</strong> {n.datum}</p>
-                <p><strong>Opis:</strong> {n.opis}</p>
-                <p>
-                  <strong>Status:</strong> {getStatusText(n.status)}
-                </p>
+                <p style={{marginRight: "40%",color:"white", fontSize: "1.8rem", paddingLeft: "40px",}}><strong>{n.datum}</strong></p>
+                <p style={{marginRight: "40%",color:"white", paddingLeft: "40px",}}><strong>Opis:</strong> {n.opis}</p>
+                <div
+                  key={n.ID}
+                  style={{
+                    backgroundColor: "white",
+                    border: "4px solid white",
+                    borderRadius: "100px",
+                    paddingLeft: "10px",
+                    width: "60%",
+                    color: getBgColor(n.status)
+                  }}
+                >
+                  <p>
+                    <strong> {getStatusText(n.status)}</strong>
+                  </p>
+                </div>
               </div>
             ))
           )}

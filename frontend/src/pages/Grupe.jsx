@@ -4,9 +4,20 @@ import { useNavigate } from "react-router-dom";
 const getBgColor = (status) => {
   switch (status) {
     case 1:
-      return "#2ecc71"; // green
+      return "white"; // green
     case 0:
       return "#3a3485"; // gray
+    default:
+      return "#3a3485";
+  }
+};
+
+const getFontColor = (status) => {
+  switch (status) {
+    case 1:
+      return "#3a3485"; // green
+    case 0:
+      return "white"; // gray
     default:
       return "#3a3485";
   }
@@ -160,12 +171,13 @@ export default function Grupe() {
                       key={i}
                       onClick={() => handleGroupClick(g)}
                       style={{
-                        backgroundColor: "white",
-                        border: `4px solid #3a3485`,
+                        backgroundColor: getBgColor(g.prijavljen),
+                        border: `4px solid white`,
                         borderRadius: "0px",
+                        marginBottom: "10px",
                         padding: "10px",
                         width: "60%",
-                        color: getBgColor(g.prijavljen),
+                        color: getFontColor(g.prijavljen),
                         cursor: "pointer"
                       }}
                     >

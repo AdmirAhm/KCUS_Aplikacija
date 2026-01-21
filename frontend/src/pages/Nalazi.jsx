@@ -30,8 +30,13 @@ export default function Nalazi() {
   const [nalazi, setNalazi] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/nalazi")
-      .then(res => res.json())
+    const userID = localStorage.getItem("userID");
+
+    fetch(`http://localhost:8000/nalazi?user=${userID}`)
+      .then(res => {
+      if (!res.ok) throw new Error("Unauthorized");
+      return res.json();
+      })
       .then(data => setNalazi(data))
       .catch(err => console.error(err));
   }, []);

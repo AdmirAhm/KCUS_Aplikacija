@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Body
+from fastapi import FastAPI, HTTPException, Body, Query
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
 from typing import List, Dict
@@ -16,10 +16,7 @@ from pydantic import BaseModel
 
 
 DB = "baza/KCUS_baza.db"
-_user_ID=-1
-def setUserID(userID):
-    global _user_ID
-    _user_ID=userID
+
 
 def get_db_connection():
     conn = sqlite3.connect(DB)
@@ -106,7 +103,6 @@ def login_user(data: dict = Body(...)):
         raise HTTPException(status_code=404, detail="Nepostojeći korisnik!")
 
     user_id = user["ID"]
-    setUserID(user_id)
 
     # provjeri ulogu
     student = conn.execute("SELECT korisnikID FROM Student WHERE korisnikID=?", (user_id,)).fetchone()
@@ -127,8 +123,8 @@ def login_user(data: dict = Body(...)):
     }
 
 @app.get("/nalazi", response_model=List[Dict])
-def get_nalazi_for_user():
-    if _user_ID == -1:
+def get_nalazi_for_user(user: int = Query(...)):
+    if user == -1:
         raise HTTPException(status_code=401, detail="Korisnik nije prijavljen")
 
     conn = get_db_connection()
@@ -140,7 +136,7 @@ def get_nalazi_for_user():
         WHERE pacijentID = ?
         ORDER BY ID DESC
         """,
-        (_user_ID,)
+        (user,)
     ).fetchall()
 
     conn.close()

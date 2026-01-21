@@ -49,6 +49,8 @@ export default function Prijava() {
         if (data.message === "Prijava uspješna") {
 	  localStorage.setItem("isLoggedIn", "true");
 	  localStorage.setItem("userRole", data.userRole);
+    localStorage.setItem("userID", data.userId);
+
 // uloga = "student" ili "pacijent"
           navigate("/");
         }

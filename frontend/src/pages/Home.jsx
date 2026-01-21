@@ -51,6 +51,7 @@ export default function Home() {
             onClick={() => {
               localStorage.removeItem("isLoggedIn");
               localStorage.removeItem("userRole");
+              localStorage.removeItem("userID");
               setIsLoggedIn(false);
               setUserRole(null);
             }}

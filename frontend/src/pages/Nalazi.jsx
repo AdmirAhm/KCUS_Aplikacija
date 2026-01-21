@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const getStatusText = (status) => {
   switch (status) {
@@ -26,7 +27,21 @@ const getBgColor = (status) => {
   }
 };
 
+const shouldAddButton = (status) => {
+  switch (status) {
+    case 0:
+      return false
+    case 1:
+      return true
+    case 2:
+      return false
+    default:
+      return false
+  }
+};
+
 export default function Nalazi() {
+  const navigate = useNavigate();
   const [nalazi, setNalazi] = useState([]);
 
   useEffect(() => {
@@ -132,33 +147,63 @@ export default function Nalazi() {
               <div
                 key={n.ID}
                 style={{
-                  backgroundColor: "3a3485",
+                  display: "flex", // make it a flex container
+                  backgroundColor: "#3a3485",
                   border: "4px solid white",
                   borderRadius: "50px",
                   marginBottom: "15px",
-                  
-                  color: getBgColor(n.status),
-                  overflow: "hidden"
+                  overflow: "hidden",
+                  color: "white",
                 }}
               >
-                <p style={{marginRight: "40%",color:"white", fontSize: "1.8rem", paddingLeft: "40px",}}><strong>{n.datum}</strong></p>
-                <p style={{marginRight: "40%",color:"white", paddingLeft: "40px",}}><strong>Opis:</strong> {n.opis}</p>
-                <div
-                  key={n.ID}
-                  style={{
-                    backgroundColor: "white",
-                    border: "4px solid white",
-                    borderRadius: "100px",
-                    paddingLeft: "10px",
-                    width: "60%",
-                    color: getBgColor(n.status)
-                  }}
-                >
-                  <p>
-                    <strong> {getStatusText(n.status)}</strong>
+                {/* Left part - 60% */}
+                <div style={{ flex: 6, padding: "20px" }}>
+                  <p style={{ fontSize: "1.8rem" }}>
+                    <strong>{n.datum}</strong>
                   </p>
+                  <p>
+                    <strong>Opis:</strong> {n.opis}
+                  </p>
+                  <div
+                    style={{
+                      backgroundColor: "white",
+                      border: "4px solid white",
+                      borderRadius: "20px",
+                      padding: "10px",
+                      width: "60%",
+                      color: getBgColor(n.status),
+                    }}
+                  >
+                    <p>
+                      <strong>{getStatusText(n.status)}</strong>
+                    </p>
+                  </div>
                 </div>
+
+                {/* Right part - 40%, only if shouldAddButton returns true */}
+                {shouldAddButton(n.status) && (
+                  <button
+                    onClick={()=>navigate("/opcije")}
+                    style={{
+                      flex: 4,
+                      backgroundColor: "white",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "20px",
+                      color: "#3a3485", // text color for contrast
+                      cursor: "pointer"
+                    }}
+                  >
+                    
+                    {/* You can put a button or anything here */}
+                    <p style={{color: getBgColor(n.status), fontSize: "1.2rem"}}>
+                      <strong>Preuzmite nalaz</strong>
+                    </p>
+                  </button>
+                )}
               </div>
+
             ))
           )}
         </div>

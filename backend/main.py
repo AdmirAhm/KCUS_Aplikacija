@@ -141,3 +141,81 @@ def get_nalazi_for_user(user: int = Query(...)):
 
     conn.close()
     return [dict(n) for n in nalazi]
+    
+@app.get("/grupe", response_model=List[Dict])  
+def get_grupe(user: int = Query(...)):
+    if user == -1:
+        raise HTTPException(status_code=401, detail="Korisnik nije prijavljen")
+
+    conn = get_db_connection()
+
+    grupe = conn.execute(
+        """
+        SELECT
+            g.ID AS ID,
+            g.predmetID AS pID,
+            g.naziv AS grupa,
+            p.naziv AS predmet,
+            COUNT(pr.studentID) AS prijavljen
+        FROM Grupa g
+        JOIN Predmet p ON g.predmetID = p.ID
+        LEFT JOIN Prijava pr 
+               ON pr.grupaID = g.ID
+              AND pr.studentID = ?
+        GROUP BY g.ID, g.predmetID, g.naziv, p.naziv
+        ORDER BY pID;
+        """,
+        (user,)
+    ).fetchall()
+
+    conn.close()
+    return [dict(n) for n in grupe]
+    
+class PrijavaRequest(BaseModel):
+    studentID: int
+    grupaID: int
+
+
+@app.post("/GrupaToggle")
+def toggle_prijava(data: PrijavaRequest):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Check if prijava already exists
+    existing = cursor.execute(
+        """
+        SELECT 1 FROM Prijava
+        WHERE studentID = ? AND grupaID = ?
+        """,
+        (data.studentID, data.grupaID)
+    ).fetchone()
+
+    if existing:
+        # DELETE
+        cursor.execute(
+            """
+            DELETE FROM Prijava
+            WHERE studentID = ? AND grupaID = ?
+            """,
+            (data.studentID, data.grupaID)
+        )
+        action = "deleted"
+    else:
+        # INSERT
+        cursor.execute(
+            """
+            INSERT INTO Prijava (studentID, grupaID)
+            VALUES (?, ?)
+            """,
+            (data.studentID, data.grupaID)
+        )
+        action = "created"
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "status": "ok",
+        "action": action
+    }
+

@@ -23,8 +23,30 @@ const getFontColor = (status) => {
   }
 };
 
-const handleGroupClick = async (group) => {
+export default function Grupe() {
+
+  const navigate = useNavigate();
+  const [grupe, setGrupe] = useState([]);
+
+  const handleGroupClick = async (group) => {
   const studentID = localStorage.getItem("userID");
+
+  // If user is trying to SUBSCRIBE
+  if (group.prijavljen === 0) {
+    const alreadySubscribed = grupe.some(
+      g =>
+        g.predmet === group.predmet &&
+        g.prijavljen === 1 &&
+        g.ID !== group.ID
+    );
+
+    if (alreadySubscribed) {
+      alert(
+        "Već ste prijavljeni na ovaj predmet!"
+      );
+      return;
+    }
+  }
 
   try {
     await fetch("http://localhost:8000/GrupaToggle", {
@@ -44,12 +66,6 @@ const handleGroupClick = async (group) => {
     alert("Greška pri prijavi");
   }
 };
-
-
-
-export default function Grupe() {
-  const navigate = useNavigate();
-  const [grupe, setGrupe] = useState([]);
 
   useEffect(() => {
     const userID = localStorage.getItem("userID");

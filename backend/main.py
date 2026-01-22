@@ -219,3 +219,63 @@ def toggle_prijava(data: PrijavaRequest):
         "action": action
     }
 
+@app.get("/termini", response_model=List[Dict])
+def get_termini_for_student(user: int = Query(...)):
+    if user == -1:
+        raise HTTPException(status_code=401, detail="Korisnik nije prijavljen")
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Main termini (student is registered)
+    termini = cursor.execute(
+        """
+        SELECT
+            t.ID AS terminID,
+            t.vrijeme,
+            t.otkazano,
+            g.ID AS grupaID,
+            g.naziv AS grupa,
+            p.ID AS predmetID,
+            p.naziv AS predmet
+        FROM Prijava pr
+        JOIN Grupa g ON pr.grupaID = g.ID
+        JOIN Predmet p ON g.predmetID = p.ID
+        JOIN Termin t ON t.grupaID = g.ID
+        WHERE pr.studentID = ?
+        ORDER BY t.vrijeme
+        """,
+        (user,)
+    ).fetchall()
+
+    result = []
+
+    for t in termini:
+        termin_dict = dict(t)
+
+        # If cancelled → fetch alternative termini
+        if t["otkazano"] == 1:
+            alternatives = cursor.execute(
+                """
+                SELECT
+                    g.naziv AS grupa,
+                    t.vrijeme
+                FROM Termin t
+                JOIN Grupa g ON t.grupaID = g.ID
+                WHERE g.predmetID = ?
+                  AND g.ID != ?
+                  AND t.otkazano = 0
+                ORDER BY t.vrijeme
+                """,
+                (t["predmetID"], t["grupaID"])
+            ).fetchall()
+
+            termin_dict["alternatives"] = [dict(a) for a in alternatives]
+        else:
+            termin_dict["alternatives"] = []
+
+        result.append(termin_dict)
+
+    conn.close()
+    return result
+

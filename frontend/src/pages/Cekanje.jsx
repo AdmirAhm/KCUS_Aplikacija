@@ -42,41 +42,131 @@ export default function Cekanje() {
       .catch(console.error);
   }, [day]);
 
+  const [infoText, setInfoText] = useState(
+  "Odaberite dan i kliknite na tačku na grafikonu za detalje."
+);
+const [selectedIndex, setSelectedIndex] = useState(null);
+
   const chartData = {
-    labels: data.map(d => `${d.hour}:00`),
-    datasets: [
-      {
-        label: "Procijenjeno čekanje (min)",
-        data: data.map(d => d.avg_wait),
-        borderColor: "white",
-        backgroundColor: "rgba(255,255,255,0.3)",
-        tension: 0.3
-      }
-    ]
-  };
+  labels: data.map(d => `${d.hour}:00`),
+  datasets: [
+    {
+      label: "Procijenjeno čekanje (min)",
+      data: data.map(d => d.avg_wait),
+      borderColor: "white",
+      backgroundColor: "rgba(255,255,255,0.3)",
+      tension: 0.3,
+
+      pointRadius: data.map((_, i) =>
+        i === selectedIndex ? 7 : 4
+      ),
+
+      pointBackgroundColor: data.map((_, i) =>
+        i === selectedIndex ? "white" : "#3a3485"
+      ),
+
+      pointBorderColor: data.map((_, i) =>
+        i === selectedIndex ? "white" : "white"
+      ),
+
+      pointBorderWidth: data.map((_, i) =>
+        i === selectedIndex ? 3 : 1
+      )
+    }
+  ]
+};
+
 
   return (
     <div
       style={{
         padding: "20px",
+        color: "white",
         background: "#3a3485",
         minHeight: "100vh",
-        color: "white"
+        fontFamily: "Arial, sans-serif"
       }}
     >
-      <h2>Procjena vremena čekanja</h2>
+      <button
+        onClick={() => window.history.back()}
+        style={{
+          padding: "10px 26px",
+          borderRadius: "30px",
+          border: "2px solid white",
+          background: "transparent",
+          color: "white",
+          fontSize: "1rem",
+          cursor: "pointer"
+        }}
+      >
+        Nazad
+      </button>
+
+      
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <img
+          src="/Slike/Logo-KCUS_featured.png"
+          alt="Logo"
+          style={{
+            maxWidth: "200px",
+            width: "100%",
+            height: "auto",
+            marginBottom: "-40px"
+          }}
+        />
+      </div>
+
+      <h1 style={{ textAlign: "center", fontSize: "0.8rem" }}>
+        INFORMACIONI SISTEM
+      </h1>
+      <hr
+        style={{
+          border: "2px solid white",
+          width: "80%",
+          margin: "20px auto"
+        }}
+      />
+
+      {/* ===== TWO COLUMN LAYOUT ===== */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "30% 2px 60%",
+          gap: "20px",
+          alignItems: "flex-start"
+        }}
+      >
+        {/* LEFT COLUMN */}
+        <div>
+          <h3>Informacije</h3>
+          <p>
+            Odjel radi u periodu od 08:00 do 16:00. Sa desne strane možete vidjeti koliko dugo pacijenti u prosjeku čekaju na pregled.
+
+          </p>
+          <p>{infoText}</p>
+        </div>
+
+        {/* DIVIDER */}
+        <div style={{ background: "white", height: "100%" }} />
+
+        {/* RIGHT COLUMN */}
+        <div>
+          <h2>Procjena vremena čekanja</h2>
 
       <select
         value={day}
         onChange={e => setDay(e.target.value)}
         style={{
-          padding: "10px 20px",
-          borderRadius: "20px",
+         padding: "10px 26px",
+          maxWidth: "100%",
+          minWidth: 0,  
+          borderRadius: "30px",
           border: "2px solid white",
           background: "transparent",
+          backgroundColor: "#3a3485",
           color: "white",
           fontSize: "1rem",
-          marginBottom: "20px"
+          cursor: "pointer",
         }}
       >
         <option value="">Odaberite dan</option>
@@ -98,10 +188,29 @@ export default function Cekanje() {
             scales: {
               x: { ticks: { color: "white" } },
               y: { ticks: { color: "white" } }
+            },
+            onClick: (event, elements) => {
+              if (!elements.length) return;
+
+              const index = elements[0].index;
+              const wait = data[index].avg_wait;
+
+              setSelectedIndex(index);
+
+              if (wait < 25) {
+                setInfoText("Čekanje je kratko. Preporučuje se dolazak u ovom terminu.");
+              } else if (wait <= 50) {
+                setInfoText("Umjereno čekanje. Moguća su manja zadržavanja.");
+              } else {
+                setInfoText("Dugo čekanje. Ako je moguće, izaberite drugi termin.");
+              }
             }
           }}
         />
+
       )}
+        </div>
+      </div>
     </div>
   );
 }

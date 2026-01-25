@@ -279,3 +279,31 @@ def get_termini_for_student(user: int = Query(...)):
     conn.close()
     return result
 
+@app.get("/wait-estimate")
+def get_wait_estimate(day: int = Query(..., ge=1, le=7)):
+    """
+    Returns average wait time per hour (8–16) for a given weekday
+    """
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    rows = cursor.execute(
+        """
+        SELECT sat, ROUND(AVG(minute_cekanja), 1) AS avg_wait
+        FROM Cekanje
+        WHERE dan = ?
+        GROUP BY sat
+        ORDER BY sat
+        """,
+        (day,)
+    ).fetchall()
+
+    conn.close()
+
+    return [
+        {
+            "hour": row["sat"],
+            "avg_wait": row["avg_wait"]
+        }
+        for row in rows
+    ]

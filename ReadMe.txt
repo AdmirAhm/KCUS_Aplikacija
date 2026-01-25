@@ -16,6 +16,7 @@ instaliraj Node.js ()
 u frontend folderu:
 	npm install
 	npm install react-router-dom
+	npm install chart.js react-chartjs-2
 	npm run dev
 
 Terminal 1:

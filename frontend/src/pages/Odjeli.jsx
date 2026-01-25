@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Odjeli() {
+  const navigate = useNavigate();
   const [departments, setDepartments] = useState([]);
   const [selected, setSelected] = useState(null);
   const [info, setInfo] = useState(null);
@@ -143,6 +145,20 @@ export default function Odjeli() {
                 <h3>Uputstvo</h3>
                 <p>{info.uputstva}</p>
               </div>
+              <button
+                onClick={() => navigate("/cekanje")}
+                style={{
+                  padding: "10px 26px",
+                  borderRadius: "30px",
+                  border: "2px solid white",
+                  background: "transparent",
+                  color: "white",
+                  fontSize: "1rem",
+                  cursor: "pointer"
+                }}
+              >
+                Čekanje
+              </button>
             </>
           )}
         </div>

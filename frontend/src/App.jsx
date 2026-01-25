@@ -8,6 +8,7 @@ import Nalazi from "./pages/Nalazi"
 import Studenti from "./pages/Studenti"
 import Grupe from "./pages/Grupe"
 import Termini from "./pages/Termini"
+import Cekanje from "./pages/Cekanje"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/studentska" element={<Studenti />} />
       <Route path="/grupe" element={<Grupe />} />
       <Route path="/termini" element={<Termini />} />
+      <Route path="/cekanje" element={<Cekanje/>}/>
 
       {/* Department */}
       <Route path="/department/:id" element={<Department />} />

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { BiFace } from "react-icons/bi";
+
 
 export default function Odjeli() {
   const navigate = useNavigate();
@@ -110,15 +112,41 @@ export default function Odjeli() {
           </select>
 
           {info && (
-            <>
-              <h3 style={{ marginTop: "20px" }}>{info.naziv}</h3>
+  <>
+    <h3 style={{ marginTop: "20px" }}>{info.naziv}</h3>
+    <p>{info.opis}</p>
 
-              <p>{info.opis}</p>
+    <p><strong>Zaposlenici:</strong></p>
 
-              <p><strong>Zaposlenici:</strong></p>
-              <p>{info.zaposlenici || "—"}</p>
-            </>
-          )}
+    {info.zaposlenici && info.zaposlenici.length > 0 ? (
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        {info.zaposlenici.map((z) => (
+          <div
+  key={z.ID}
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "10px",
+    padding: "12px",
+    borderRadius: "6px"
+  }}
+>
+  <BiFace size={200} />
+  <p style={{ margin: 0, textAlign: "center" }}>
+    {z.ime_prezime}
+  </p>
+</div>
+
+        ))}
+      </div>
+    ) : (
+      <p>—</p>
+    )}
+  </>
+)}
+
         </div>
 
         {/* VERTICAL DIVIDER */}

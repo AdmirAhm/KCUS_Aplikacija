@@ -9,6 +9,7 @@ import Studenti from "./pages/Studenti"
 import Grupe from "./pages/Grupe"
 import Termini from "./pages/Termini"
 import Cekanje from "./pages/Cekanje"
+import FAQ from "./pages/FAQ"
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="/grupe" element={<Grupe />} />
       <Route path="/termini" element={<Termini />} />
       <Route path="/cekanje" element={<Cekanje/>}/>
+      <Route path="/faq" element={<FAQ/>}/>
 
       {/* Department */}
       <Route path="/department/:id" element={<Department />} />

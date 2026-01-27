@@ -46,12 +46,31 @@ def list_departments():
 @app.get("/odjeli/{dept_id}", response_model=Dict)
 def get_department(dept_id: int):
     conn = get_db_connection()
-    dept = conn.execute("SELECT * FROM Odjel WHERE ID=?", (dept_id,)).fetchone()
-    conn.close()
-    if dept:
-        return dict(dept)
-    else:
+
+    dept = conn.execute(
+        "SELECT ID, naziv, slika, opis FROM Odjel WHERE ID=?",
+        (dept_id,)
+    ).fetchone()
+
+    if not dept:
+        conn.close()
         raise HTTPException(status_code=404, detail="Department not found")
+
+    zaposlenici = conn.execute(
+        "SELECT ID, ime_prezime FROM Uposlenik WHERE odjelID=?",
+        (dept_id,)
+    ).fetchall()
+
+    conn.close()
+
+    return {
+        "id": dept["ID"],
+        "naziv": dept["naziv"],
+        "opis": dept["opis"],
+        "slika": dept["slika"],
+        "zaposlenici": [dict(z) for z in zaposlenici]
+    }
+    
 @app.post("/register")
 def register(data: RegisterRequest):
     conn = get_db_connection()

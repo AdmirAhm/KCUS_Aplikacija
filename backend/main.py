@@ -105,16 +105,14 @@ from fastapi import FastAPI, HTTPException, Body
 
 @app.post("/prijava")
 def login_user(data: dict = Body(...)):
-    ime = data.get("ime")
-    prezime = data.get("prezime")
     email = data.get("email")
     sifra = data.get("sifra")
 
     conn = get_db_connection()
     # prvo pronađi korisnika po login podacima
     user = conn.execute(
-        "SELECT ID FROM Korisnik WHERE ime=? AND prezime=? AND email=? AND password=?",
-        (ime, prezime, email, sifra)
+        "SELECT ID FROM Korisnik WHERE email=? AND password=?",
+        (email, sifra)
     ).fetchone()
 
     if not user:

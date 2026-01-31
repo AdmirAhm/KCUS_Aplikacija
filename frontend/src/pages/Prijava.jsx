@@ -28,7 +28,7 @@ export default function Prijava() {
     }
 
     // Provjera da su sva polja unesena
-    if (!ime || !prezime || !email) {
+    if (!email) {
       alert("Molimo popunite sva polja!");
       return;
     }
@@ -37,7 +37,7 @@ export default function Prijava() {
       const response = await fetch("http://localhost:8000/prijava", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ime, prezime, email, sifra })
+        body: JSON.stringify({email, sifra })
       });
 
       const data = await response.json();
@@ -106,23 +106,6 @@ export default function Prijava() {
       >
         <h2 style={{ textAlign: "center" }}>Prijava</h2>
 
-        <input
-          type="text"
-          placeholder="Ime"
-          value={ime}
-          onChange={(e) => setIme(e.target.value)}
-          required
-          style={inputStyle}
-        />
-
-        <input
-          type="text"
-          placeholder="Prezime"
-          value={prezime}
-          onChange={(e) => setPrezime(e.target.value)}
-          required
-          style={inputStyle}
-        />
 
         <input
           type="email"

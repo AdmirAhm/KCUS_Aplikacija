@@ -183,7 +183,8 @@ export default function Nalazi() {
                 {/* Right part - 40%, only if shouldAddButton returns true */}
                 {shouldAddButton(n.status) && (
                   <button
-                    onClick={()=>navigate("/opcije")}
+                    
+                    onClick={()=>alert("Nalaz je uspješno poslan na Vašu email adresu")}
                     style={{
                       flex: 4,
                       backgroundColor: "white",

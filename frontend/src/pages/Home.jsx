@@ -22,7 +22,7 @@ export default function Home() {
     { icon: <BiMap size={80} />, text: "Informacije o odjelima", path: "/odjeli", allowedRoles: ["student", "pacijent", null] },
     { icon: <BiPaste size={80} />, text: "Pregled nalaza", path: "/nalazi", allowedRoles: ["pacijent"] },
     { icon: <BiBook size={80} />, text: "Studentska stranica", path: "/studentska", allowedRoles: ["student"] },
-    { icon: <BiQuestionMark size={80} />, text: "Čest postavljana pitanja", path: "/faq", allowedRoles: ["student", "pacijent", null] }
+    { icon: <BiQuestionMark size={80} />, text: "Često postavljana pitanja", path: "/faq", allowedRoles: ["student", "pacijent", null] }
   ];
 
   // --- Funkcija koja provjerava da li dugme treba biti enabled

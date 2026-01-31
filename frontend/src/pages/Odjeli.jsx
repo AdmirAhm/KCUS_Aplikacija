@@ -169,10 +169,10 @@ export default function Odjeli() {
               />
 
               {/* UPUTSTVO */}
-              <div>
+              {/*<div>
                 <h3>Uputstvo</h3>
                 <p>{info.uputstva}</p>
-              </div>
+              </div>*/}
               <button
                 onClick={() => navigate("/cekanje")}
                 style={{

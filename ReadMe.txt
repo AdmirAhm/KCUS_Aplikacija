@@ -1,35 +1,44 @@
-Uputa za GitHub:
-Instaliraj git bash
-Kad hoces da preuzmes kod:
-	U folderu u kojem hoces kod otvoris git bash
-	git clone <url od projekta>
-Kad hoces da preuzmes novu verziju (uradi kad god sta hoces da mijenjas):
-	git pull origin master
-Kad hoces da pohranis izmjenu:
-	Za svaku izmijenjenu fajlu: git add <put do fajla> (moze i samo git add --all)
-	git commit -m "naziv komita"
-	git push origin master
+# KCUS Information System
 
-Priprema:
+## Introduction
+This repository represents a design of an information system for a hospital complex developed as a project at the Faculty of Electrical Engineering, University of Sarajevo for the subject "Interakcija Čovjek Računar". The system is built as a web application with React and Vite for visualisation, Python with FastAPI library for backend, and SQLite for data storage. 
+
+---
+
+## Installation
+Steps required to install and set up the project locally are listed below:
+
+```bash
+# clone the repository
+git clone https://github.com/AdmirAhm/KCUS_Aplikacija
+
+# move into the frontend directory
+cd KCUS_Aplikacija\frontend
+
+# install dependencies
 pip install fastapi uvicorn
-instaliraj Node.js ()
-u frontend folderu:
-	npm install
-	npm install react-router-dom
-	npm install chart.js react-chartjs-2
-	npm run dev
+npm install
+npm install react-router-dom
+npm install react-icons
+npm install chart.js react-chartjs-2
 
-Terminal 1:
-u backend folderu
-	uvicorn main:app --reload
+---
+## Running the application locally
+To run the application locally, you need to run two terminals. The first terminal is run within the backend folder with the following command:
+```bash
+uvicorn main:app --reload
 
-Kad zelim provjeriti stranicu u folder sa aplikacijom udjem u cmd cd frontend i u drugi cmd cd backend i unosim naredbe npm run dev za frontend a za backend uvicorn main:app --reload
+The second terminal is run within the frontend folder with the following command:
+```bash
+npm run dev
 
-Terminal 2:
-u frontend folderu
-	npm run dev
+Alternatively, on Windows you can just run the start.bat file.
+After the application is started, you can access it using your browser at localhost:5173
 
-Pogledati adresu u drugom terminalu (localhost:PORT), na toj adresi je lokalno pokrenut frontend
+---
 
-Pokretati kod kroz start.bat fajlu
+## Contributors
+Admir Ahmespahić
+Nejla Buljina
+
 ...

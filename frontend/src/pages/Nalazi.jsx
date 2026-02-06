@@ -21,7 +21,7 @@ const getBgColor = (status) => {
     case 1:
       return "#2ecc71"; // green
     case 2:
-      return "#3a3485"; // gray
+      return "white"; // gray
     default:
       return "#3a3485";
   }
@@ -34,7 +34,7 @@ const shouldAddButton = (status) => {
     case 1:
       return true
     case 2:
-      return false
+      return true
     default:
       return false
   }
@@ -166,11 +166,6 @@ export default function Nalazi() {
                   </p>
                   <div
                     style={{
-                      backgroundColor: "white",
-                      border: "4px solid white",
-                      borderRadius: "20px",
-                      padding: "10px",
-                      width: "60%",
                       color: getBgColor(n.status),
                     }}
                   >
@@ -181,28 +176,43 @@ export default function Nalazi() {
                 </div>
 
                 {/* Right part - 40%, only if shouldAddButton returns true */}
-                {shouldAddButton(n.status) && (
-                  <button
-                    
-                    onClick={()=>alert("Nalaz je uspješno poslan na Vašu email adresu")}
-                    style={{
-                      flex: 4,
-                      backgroundColor: "white",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "20px",
-                      color: "#3a3485", // text color for contrast
-                      cursor: "pointer"
-                    }}
-                  >
-                    
-                    {/* You can put a button or anything here */}
-                    <p style={{color: getBgColor(n.status), fontSize: "1.2rem"}}>
-                      <strong>Preuzmite nalaz</strong>
-                    </p>
-                  </button>
-                )}
+                {/* Right part - 40% */}
+{shouldAddButton(n.status) && (
+  <div
+    style={{
+      flex: 4,
+      display: "flex",
+      alignItems: "center",      // vertical center
+      justifyContent: "center",  // horizontal center
+      padding: "20px"
+    }}
+  >
+    <button
+      onClick={() =>
+        alert("Nalaz je uspješno poslan na Vašu email adresu")
+      }
+  style={{
+    padding: "clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 28px)",
+    fontSize: "clamp(0.9rem, 1.1vw, 1.15rem)",
+    backgroundColor: "white",
+    borderRadius: "20px",
+    border: "none",
+    color: "#3a3485",
+    cursor: "pointer",
+
+    whiteSpace: "normal",
+    textAlign: "center",
+    lineHeight: 1.3,
+
+    maxWidth: "100%",
+    wordBreak: "break-word"
+  }}
+    >
+      <strong>Preuzmite nalaz</strong>
+    </button>
+  </div>
+)}
+
               </div>
 
             ))

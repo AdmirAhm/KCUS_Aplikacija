@@ -171,9 +171,10 @@ export default function Grupe() {
                 key={index}
                 style={{
                   backgroundColor: "#3a3485",
-                  border: "4px solid white",
+                  border: "4px solid transparent",
                   borderRadius: "30px",
-                  marginBottom: "15px",
+                  marginBottom: "-30px",
+                  marginLeft: "30px",
                   padding: "20px",
                   color: "white",
                 }}
@@ -189,10 +190,10 @@ export default function Grupe() {
                       style={{
                         backgroundColor: getBgColor(g.prijavljen),
                         border: `4px solid white`,
-                        borderRadius: "0px",
+                        borderRadius: "30px",
                         marginBottom: "10px",
                         padding: "10px",
-                        width: "60%",
+                        width: "100%",
                         color: getFontColor(g.prijavljen),
                         cursor: "pointer"
                       }}

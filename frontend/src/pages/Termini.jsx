@@ -131,7 +131,7 @@ export default function Termini() {
                 </p>
 
                 {t.alternatives.map((a, j) => (
-                  <p key={j} style={{ fontSize: "0.9rem" }}>
+                  <p key={j} style={{ fontSize: "1.2rem" }}>
                     {a.grupa} – {a.vrijeme}
                   </p>
                 ))}

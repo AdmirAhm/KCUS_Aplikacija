@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 import {
   Chart as ChartJS,
   LineElement,
@@ -76,6 +78,8 @@ const [selectedIndex, setSelectedIndex] = useState(null);
   ]
 };
 
+const location = useLocation();
+const departmentName = location.state?.departmentName;
 
   return (
     <div
@@ -138,7 +142,7 @@ const [selectedIndex, setSelectedIndex] = useState(null);
       >
         {/* LEFT COLUMN */}
         <div>
-          <h3>Informacije</h3>
+          <h3>{departmentName}</h3>
           <p>
             Odjel radi u periodu od 08:00 do 16:00. Sa desne strane možete vidjeti koliko dugo pacijenti u prosjeku čekaju na pregled.
 

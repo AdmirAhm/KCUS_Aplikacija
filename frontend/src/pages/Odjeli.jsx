@@ -8,6 +8,12 @@ export default function Odjeli() {
   const [departments, setDepartments] = useState([]);
   const [selected, setSelected] = useState(null);
   const [info, setInfo] = useState(null);
+  const [showFullOpis, setShowFullOpis] = useState(false);
+
+  useEffect(() => {
+    setShowFullOpis(false);
+  }, [selected]);
+
 
   useEffect(() => {
     fetch("http://localhost:8000/odjeli")
@@ -24,6 +30,15 @@ export default function Odjeli() {
         .catch(err => console.log(err));
     }
   }, [selected]);
+
+  const getShortText = (text, wordLimit = 50) => {
+  if (!text) return "";
+  const words = text.split(" ");
+  return words.length > wordLimit
+    ? words.slice(0, wordLimit).join(" ") + "..."
+    : text;
+};
+
 
   return (
     <div
@@ -114,7 +129,27 @@ export default function Odjeli() {
           {info && (
   <>
     <h3 style={{ marginTop: "20px" }}>{info.naziv}</h3>
-    <p>{info.opis}</p>
+    <p>
+  {showFullOpis ? info.opis : getShortText(info.opis, 50)}
+</p>
+
+{info.opis.split(" ").length > 30 && (
+  <button
+    onClick={() => setShowFullOpis(prev => !prev)}
+    style={{
+          padding: "4px 4px",
+          borderRadius: "30px",
+          border: "2px solid white",
+          background: "transparent",
+          color: "white",
+          fontSize: "0.8rem",
+          cursor: "pointer"
+        }}
+  >
+    {showFullOpis ? "Prikaži manje" : "Prikaži više"}
+  </button>
+)}
+
 
     <p><strong>Zaposlenici:</strong></p>
 
@@ -174,7 +209,12 @@ export default function Odjeli() {
                 <p>{info.uputstva}</p>
               </div>*/}
               <button
-                onClick={() => navigate("/cekanje")}
+                onClick={() => navigate("/cekanje", {
+      state: {
+        departmentId: info.id,
+        departmentName: info.naziv
+      }
+    })}
                 style={{
                   padding: "10px 26px",
                   borderRadius: "30px",
@@ -187,6 +227,21 @@ export default function Odjeli() {
               >
                 Čekanje
               </button>
+            </>
+          )}
+          {!info && (
+            <>
+              {/* MAP */}
+              <img
+                src={"Mape/blank.png"}
+                alt="Mapa"
+                style={{
+                  width: "100%",
+                  maxWidth: "800px",
+                  marginBottom: "20px",
+                  borderRadius: "6px"
+                }}
+              />
             </>
           )}
         </div>

@@ -30,9 +30,10 @@ const days = [
   { value: 6, label: "Subota" },
   { value: 7, label: "Nedjelja" }
 ];
-
+const today = new Date();
+const dayIndex = today.getDay(); 
 export default function Cekanje() {
-  const [day, setDay] = useState("");
+  const [day, setDay] = useState(dayIndex+1);
   const [data, setData] = useState([]);
 
   useEffect(() => {

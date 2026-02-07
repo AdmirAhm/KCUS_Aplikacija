@@ -30,8 +30,10 @@ npm run dev
 ```
 
 Alternatively, on Windows you can just run the start.bat file.
+
 After the application is started, you can access it using your browser at localhost:5173
 
 ## Contributors
 Admir Ahmespahić
+
 Nejla Buljina
